@@ -12,12 +12,12 @@ class CVideoDatabase:
     def AddToTable(self, table, firstField, secondField, value):
         debug("CVideoDatabase AddToTable")
         sql = "select %s from %s where %s like %s" % (firstField, table, secondField,self.db.pparam)
-        print sql
+        print(sql)
         self.cur.execute(sql,((value),))
         row = self.cur.fetchone()
         if row is None:
             sql = "INSERT INTO %s (%s, %s) values(NULL, %s)" % (table, firstField, secondField, self.db.pparam)
-            print sql
+            print(sql)
             self.cur.execute(sql,((value),))
             self.db.con.commit()
             debug("CVideoDatabase cursor",self.cur.lastrowid)

@@ -81,9 +81,9 @@ def debug(msg, *args):
         else:
             xbmc.log(u"Tag: {0}#{1}#".format(msg, txt).encode('ascii','xmlcharrefreplace'), xbmc.LOGDEBUG)
     except:
-        print "Error in Debugoutput"
-        print msg
-        print args
+        print("Error in Debugoutput")
+        print(msg)
+        print(args)
             
 def error(msg, *args):
     txt=''

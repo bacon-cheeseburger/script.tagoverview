@@ -90,7 +90,7 @@ class CDatabase:
     def init_sqlite(self):
         debug("CDatabase init sqlite")
         from sqlite3 import dbapi2 as sqlite
-        print self.config['database']
+        print(self.config['database'])
         if self.config['database'] == None:
             self.config['database'] = self.getSQLiteFileName(VIDEO_SEARCHPATTERN_SQLITE)
         else:
