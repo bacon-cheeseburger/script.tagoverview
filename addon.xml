@@ -8,7 +8,7 @@
 	</extension>
 	
 	<extension point="kodi.context.item">
-    <menu id="kodi.core.manage">
+    <menu id="kodi.core.main">
       <item library="default.py">
         <label>32000</label>
         <visible>String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,musicvideo)</visible>
