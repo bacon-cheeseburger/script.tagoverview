@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.tagoverview" name="Tag Overview" version="0.1.1" provider-name="fnord12 via olivaar">
+<addon id="script.tagoverview" name="Tag Overview" version="0.1.2" provider-name="teriyaki via fnord12 via olivaar">
 	<requires>
-		<import addon="xbmc.python" version="2.25.0"/>
+		<import addon="xbmc.python" version="3.0.0"/>
 	</requires>
 	<extension point="xbmc.python.script" library="default.py">
 		<provides>executable</provides>
