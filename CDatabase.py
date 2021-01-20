@@ -1,4 +1,4 @@
-import os, xbmc, glob, string
+import os, xbmc, xbmcvfs, glob, string
 import xml.dom.minidom
 from strings import * 
 
@@ -110,7 +110,7 @@ class CDatabase:
         
     def getSQLiteFileName(self,pattern):
         debug("CDatabase getsqlitefilename")
-        os.chdir(xbmc.translatePath(DATABASE_PATH+"Database/"))
+        os.chdir(xbmcvfs.translatePath(DATABASE_PATH+"Database/"))
         maxver=0
         file = sorted(glob.glob(pattern),reverse=True)[0]
         if int( file[-6:-3]) < MINVER:
@@ -118,7 +118,7 @@ class CDatabase:
             exit()
         else:
             dbfilename = file
-        return xbmc.translatePath(DATABASE_PATH +"Database/" + dbfilename)
+        return xbmcvfs.translatePath(DATABASE_PATH +"Database/" + dbfilename)
 
     def concatrows(self, *args):
         txt=''
@@ -159,11 +159,11 @@ class CDatabase:
         return ''.join(rc)
     
     def getASpath(self):
-        path = xbmc.translatePath(PROFILE_PATH+ADVSETTINGS_FILE)
+        path = xbmcvfs.translatePath(PROFILE_PATH+ADVSETTINGS_FILE)
         if os.path.exists(path):
             debug("CDatabase getaspath:",path)
             return path
-        path = xbmc.translatePath(MASTERPROFILE_PATH+ADVSETTINGS_FILE)
+        path = xbmcvfs.translatePath(MASTERPROFILE_PATH+ADVSETTINGS_FILE)
         if os.path.exists(path):
             debug("CDatabase getaspath:",path)
             return path
