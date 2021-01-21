@@ -1,4 +1,9 @@
 # script.tagoverview
+JAN 20 2021
+Updated for Kodi Matrix (python3), no backwards compatibility included.
+
+========================================
+
 Reviving and updating the Tag Overview created by olivaar.   A way to manage tags in Kodi.  You can put this in your keymap to run the script by pressing the t key: &lt;t&gt;RunScript(script.tagoverview)&lt;/t&gt;
 
 Or this using JSON:
