@@ -6,33 +6,29 @@
 	<extension point="xbmc.python.script" library="default.py">
 		<provides>executable</provides>
 	</extension>
-	
 	<extension point="kodi.context.item">
-    <menu id="kodi.core.main">
-      <item library="default.py">
-        <label>32000</label>
-        <visible>String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,musicvideo)</visible>
-      </item>
-    </menu>
-  </extension>
-	
-	
-	
+		<menu id="kodi.core.main">
+			<item library="default.py">
+			        <label>32000</label>
+				<visible>String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,musicvideo)</visible>
+			</item>
+		</menu>
+	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en_GB">A quick way to edit tags and see an overview of all tags.</summary>
 		<description lang="en_GB">Reviving and updating the Tag Overview created by olivaar.  You can put this in your keymap to run the script by pressing the t key: &lt;t&gt;RunScript(script.tagoverview)&lt;/t&gt;</description>
 		<language></language>
 		<platform>all</platform>
 		
-		<source>https://github.com/fnord12/script.tagoverview</source>
+		<source>https://github.com/bacon-cheeseburger/script.tagoverview</source>
 		<forum>https://forum.kodi.tv/showthread.php?tid=164067</forum>
 		
-		<news>Updated for Leia.  Added mouse support.  Added support for stacked movies.  Updated sorting.  Added context menu.  Added delete confirmation.</news>
-    <assets>
-      <icon>resources/icon.png</icon>
-      <fanart>resources/fanart.jpg</fanart>
-    </assets>
-</extension>
+		<news>Updated for Matrix and python3.  Updated for Leia.  Added mouse support.  Added support for stacked movies.  Updated sorting.  Added context menu.  Added delete confirmation.</news>
+		<assets>
+			<icon>resources/icon.png</icon>
+			<fanart>resources/fanart.jpg</fanart>
+		</assets>
+	</extension>
 </addon>
 
 

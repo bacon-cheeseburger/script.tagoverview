@@ -1,18 +1,18 @@
 import xbmc, xbmcgui, xbmcaddon
 from CVideoDatabase import CVideoDatabase
-from strings import * 
+from strings import *
 t=None
 class CDialogTagFiles(xbmcgui.WindowXMLDialog):
 
     def __new__(cls):
         debug('CDialogTagFiles new')
-        return super(CDialogTagFiles, cls).__new__(cls, "TagFiles.xml", ADDON.getAddonInfo('path')) 
+        return super(CDialogTagFiles, cls).__new__(cls, "TagFiles.xml", ADDON.getAddonInfo('path'))
 
     #init window
     def __init__(self):
         debug('CDialogTagFiles init')
         self.idTag = -1
-        
+
         super(CDialogTagFiles, self).__init__()
 
     #def doModal(self,idTag, type):
@@ -23,11 +23,11 @@ class CDialogTagFiles(xbmcgui.WindowXMLDialog):
         self.parent = parent
         self.windowtitle = kwargs.get("windowtitle")
         xbmcgui.WindowXMLDialog.doModal(self)
-        
+
     #init eventhandler
     def onInit( self ):
         debug('CDialogTagFiles oninit')
-        super(CDialogTagFiles, self).__init__() 
+        super(CDialogTagFiles, self).__init__()
         self.buildList()
         self.getControl(1).setLabel(self.windowtitle)
         self.setFocusId(TAGLIST)
@@ -57,7 +57,7 @@ class CDialogTagFiles(xbmcgui.WindowXMLDialog):
                 control.addItem(self.createListItem(language(LABEL_ADDTVSHOW),PROPSTATE_OFF,0))
             for tag in movietags:
                 control.addItem(self.createListItem(tag[1],PROPSTATE_TRUE,tag[0]))
-    
+
     #create a listitem for the listview and set properties
     def createListItem(self, label, enabled, movieid):
         li = xbmcgui.ListItem(encode(label))
@@ -69,9 +69,9 @@ class CDialogTagFiles(xbmcgui.WindowXMLDialog):
     #control windowactions
     def onAction(self, action):
         if not (action.getId() == ACTION_SELECT_ITEM) or not (action.getId() == ACTION_SELECT_ITEM2):
-            self.onAction1(action)        
+            self.onAction1(action)
         if (action == ACTION_SELECT_ITEM) or (action == ACTION_SELECT_ITEM2):
-            controlId = self.getFocusId() 
+            controlId = self.getFocusId()
             if controlId == TAGLIST:
                 if self.idTag == "-1":
                     self.callTagWindow(self.getControl(controlId))
@@ -89,7 +89,7 @@ class CDialogTagFiles(xbmcgui.WindowXMLDialog):
         self.close()
         debug('CDialogTagFiles callTagWindow after')
         return
-                    
+
     #switch the tag-radios on/off and create or delete the db-entry
     def switchState(self, cntrl):
         debug('CDialogTagFiles switchState')
@@ -124,18 +124,16 @@ class CDialogTagFiles(xbmcgui.WindowXMLDialog):
             return ret
         return allmovies[ret][0]
 
-        
     def onAction1(self, action):
         if (action == ACTION_PREVIOUS_MENU) or (action == ACTION_PARENT_DIR) or (action == ACTION_PREVIOUS_MENU2):
             self.state = -1 #success
             self.close() #exit
-            
+
     #helpfuntion to seperate the call to vdb-layer
     #connect tag and movie
     def AddTagToItem(self, idTag, idMovie, type):
         debug("CDialogTagFiles AddTagToItem",idMovie,idTag,type)
         return self.vdb.AddTagToItem(idMovie, idTag, type)
-    
 
     #helpfuntion to seperate the call to vdb-layer
     #remove the connection between tag and movie
@@ -148,7 +146,7 @@ class CDialogTagFiles(xbmcgui.WindowXMLDialog):
     def AddTag(self, value):
         debug("CDialogTagFiles AddTag")
         return self.vdb.AddToTable("tag", "tag_id", "name", value)
-    
+
     #show keyboard, create tag and rebuild the listview
     def GetNewTag(self, cntrl):
         debug("CDialogTagFiles getnewtag")

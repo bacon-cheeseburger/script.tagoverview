@@ -7,13 +7,13 @@ class CDialogTagOverview(xbmcgui.WindowXMLDialog):
     #subclassing new to integrate the dialog definition into the dialog control class
     def __new__(cls):
         debug("CDialogTagOverview open")
-        return super(CDialogTagOverview, cls).__new__(cls, "TagOverview.xml", ADDON.getAddonInfo('path')) 
+        return super(CDialogTagOverview, cls).__new__(cls, "TagOverview.xml", ADDON.getAddonInfo('path'))
 
         #init window
     def __init__(self):
         debug("CDialogTagOverview init")
-        super(CDialogTagOverview, self).__init__() 
-    
+        super(CDialogTagOverview, self).__init__()
+
     #init eventhandler
     def onInit( self ):
         debug("CDialogTagOverview onInit")
@@ -57,7 +57,7 @@ class CDialogTagOverview(xbmcgui.WindowXMLDialog):
             prevId = tagId
         if name != '':
             control.addItem(self.createListItem(name,mo, ep, mv, tagId))
-    
+
     #create a listitem for the listview and set properties
     def createListItem(self, tag, movie, tvshow, musicvideo,tagId):
         li = xbmcgui.ListItem(tag)
@@ -70,14 +70,14 @@ class CDialogTagOverview(xbmcgui.WindowXMLDialog):
     #control windowactions
     def onAction(self, action):
         if not (action.getId() == ACTION_SELECT_ITEM) or not (action.getId() == ACTION_SELECT_ITEM2):
-            self.onAction1(action)        
+            self.onAction1(action)
         if (action == ACTION_SELECT_ITEM) or (action == ACTION_SELECT_ITEM2):
-            controlId = self.getFocusId() 
+            controlId = self.getFocusId()
             if controlId == TAGLIST:
                 self.tagSelected(self.getControl(controlId))
             if controlId == NEWTAGBTN:
                 self.GetNewTag(self.getControl(TAGLIST))
-                
+
     #show keyboard, create tag and rebuild the listview
     def GetNewTag(self, cntrl):
         debug("CDialogTagOverview getnewtag")
@@ -96,15 +96,15 @@ class CDialogTagOverview(xbmcgui.WindowXMLDialog):
         wnd = None
         okdialog = None
         seldialog = xbmcgui.Dialog()
-        
+
         #assetMsg = "'%s'" % control.getSelectedItem().getProperty(PROPERTY_TAGID)
         #xbmc.executebuiltin("Notification(\"Tag Quick Edit\", \"%s\")" % assetMsg)
-        
+
         if control.getSelectedItem().getProperty(PROPERTY_TAGID) == '-1':
             TagName = encode(language(LABEL_WITHOUTTAG))
-        else: 
+        else:
             TagName = self.vdb.GetTagById(control.getSelectedItem().getProperty(PROPERTY_TAGID))[0][1]
-       
+
         ret = seldialog.select(encode(language(LABEL_MAKESELECTION)), [encode(language(LABEL_SHOWMOVIES)),encode(language(LABEL_SHOWTVSHOWS)),encode(language(LABEL_SHOWMVIDEOS)), encode(language(LABEL_DELTAG))])
         if ret == 0: #show movies
             debug("CDialogTagOverview tagSelected movies before")
@@ -130,24 +130,24 @@ class CDialogTagOverview(xbmcgui.WindowXMLDialog):
                 self.deleteTag(control, control.getSelectedItem().getProperty(PROPERTY_TAGID))
         control.reset()
         self.buildList()
-        
+
     def onAction1(self, action):
         if (action == ACTION_PREVIOUS_MENU) or (action == ACTION_PARENT_DIR) or (action == ACTION_PREVIOUS_MENU2):
             self.state = -1 #success
             self.close() #exit
-     
+
     def deleteTag(self, cntrl, tag_id):
         debug("CDialogTagOverview deletetag tag_id:",tag_id)
         self.vdb.Removetag_link(tag_id)
         #this line is normaly not needed because of the standard delete-trigger of tag_link. but if no record in tag_link is deleted we have to delete the tag seperately
-        self.vdb.RemoveTag(tag_id)   
-            
+        self.vdb.RemoveTag(tag_id)
+
     #helpfuntion to seperate the call to vdb-layer
     #create a new tag
     def AddTag(self, value):
         debug("CDialogTagOverview addtag")
         self.vdb.AddToTable("tag", "tag_id", "name", value)
-    
+
     #show keyboard, create tag and rebuild the listview
     def GetNewTag(self, cntrl):
         debug("CDialogTagOverview getnewtag")
@@ -157,4 +157,3 @@ class CDialogTagOverview(xbmcgui.WindowXMLDialog):
             self.AddTag(keyboard.getText().strip())
             cntrl.reset()
             self.buildList()
-        

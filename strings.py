@@ -84,7 +84,7 @@ def debug(msg, *args):
         print("Error in Debugoutput")
         print(msg)
         print(args)
-            
+
 def error(msg, *args):
     txt=''
     for arg in args:
@@ -94,7 +94,7 @@ def error(msg, *args):
     if txt == '':
         xbmc.log("Tag: "+str(msg), xbmc.LOGERROR)
     else:
-        xbmc.log("Tag: "+str(msg)+"#"+txt+"#", xbmc.LOGERROR)        
+        xbmc.log("Tag: "+str(msg)+"#"+txt+"#", xbmc.LOGERROR)
 
 def encode(s):
     return s.encode('utf-8','replace')
@@ -104,4 +104,3 @@ def decode(string):
 
 def uc(s):
     return unicode(s, 'utf-8','replace')
-    

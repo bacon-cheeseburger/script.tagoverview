@@ -7,7 +7,7 @@ class CVideoDatabase:
         debug("CVideoDatabase init")
         self.db = CDatabase()
         self.cur = self.db.con.cursor()
-    
+
     #add an item to a table
     def AddToTable(self, table, firstField, secondField, value):
         debug("CVideoDatabase AddToTable")
@@ -24,7 +24,7 @@ class CVideoDatabase:
             return self.cur.lastrowid
         else:
             return row[0]
-    
+
     #add a connection between two records
     def AddToLinkTable(self, table, firstField, firstID, secondField, secondID, typeField, type):
         debug("CVideoDatabase AddToLinkTable: table:{0} firstField:{1} firstID:{2} secondField:{3} secondID:{4} typeField:{5} type:{6} ".format(table, firstField, firstID, secondField, secondID, typeField, type))
@@ -56,7 +56,7 @@ class CVideoDatabase:
            sql = sql + " and %s =%s" % (typeField, self.db.pparam)
         self.cur.execute(sql,((type),))
         self.db.con.commit()
-    
+
     #Add a Tag to the table
     def AddTagToItem(self, idMovie, tag_id, type):
         debug("CVideoDatabase AddTagToItem: idMovie:{0} tag_id:{1} type:{2}".format(idMovie, tag_id, type))
@@ -64,7 +64,7 @@ class CVideoDatabase:
             xbmc.log('CVideoDatabase AddTagToItem: Type is None', xbmc.LOGERROR)
             return
         return self.AddToLinkTable("tag_link", "tag_id", tag_id, "media_id", idMovie, "media_type", type)
- 
+
     #Remove the connection between tag and movie
     def RemoveTagFromItem(self, idMovie, tag_id, type):
         debug("CVideoDatabase RemoveTagFromItem: idMovie:{0} tag_id:{1} type:{2}".format(idMovie, tag_id, type))
@@ -72,7 +72,7 @@ class CVideoDatabase:
             xbmc.log('CVideoDatabase RemoveTagFromItem: Type is None', xbmc.LOGERROR)
             return
         self.RemoveFromLinkTable("tag_link", "tag_id", tag_id, "media_id", idMovie, "media_type", type);
-        
+
     def Removetag_link(self, tag_id):
         sql = "delete from tag_link where tag_id = %s" % (self.db.pparam)
         debug("CVideoDatabase Removetag_link: sql:{0}".format(sql))
@@ -84,20 +84,20 @@ class CVideoDatabase:
         debug("CVideoDatabase RemoveTag: sql:{0}".format(sql))
         self.cur.execute(sql,((tag_id),))
         self.db.con.commit()
-    
+
     #get all existing tags
     def GetAllTags(self):
         sql = "select tag_id, name from tag ORDER BY tag.name"
         debug("CVideoDatabase GetAllTags: sql:{0}".format(sql))
         self.cur.execute(sql)
         return self.cur.fetchall()
-    
+
     def GetTagById(self, id):
         sql = "select tag_id, name from tag where tag_id = %s" % (self.db.pparam)
         debug("CVideoDatabase gettagbyid: sql:{0}".format(sql))
         self.cur.execute(sql,((id),))
         return self.cur.fetchall()
-    
+
     #get all tags from a movie
     def GetVideoTags(self, id, type):
         #sql = "SELECT tag.tag_id, tag.name FROM tag, tag_link WHERE tag_link.media_id = {0} AND tag_link.media_type = '{1}' AND tag_link.tag_id = tag.tag_id ORDER BY tag.tag_id".format(id,type)
@@ -105,13 +105,13 @@ class CVideoDatabase:
         debug("CVideoDatabase getvideotags: sql:{0}".format(sql))
         self.cur.execute(sql)
         return self.cur.fetchall()
-        
+
     def GetCountedTags(self):
         sql = "select tag.name,tag_link.media_type,count(tag_link.media_id),tag.tag_id from tag left join tag_link on tag.tag_id = tag_link.tag_id group by tag.name, tag_link.media_type order by tag.name, tag_link.media_type"
         debug("CVideoDatabase getcountedtags: sql:{0}".format(sql))
         self.cur.execute(sql)
         return self.cur.fetchall()
-    
+
     def GetAllMovies(self):
         sql = 'SELECT movie.idMovie, movie.c00 FROM movie order by movie.c00'
         debug("CVideoDatabase getallmovies: sql:{0}".format(sql))
@@ -140,7 +140,7 @@ class CVideoDatabase:
         debug("CVideoDatabase GetAllmovieswithtag: sql:{0}".format(sql))
         self.cur.execute(sql,((tag_id),))
         return self.cur.fetchall()
-        
+
     def getAllMoviesWithoutTag(self, type):
         if type == PROPERTY_MOVIE:
             sql = "SELECT movie.idMovie , movie.c00 from movie where movie.idMovie NOT IN (select tag_link.media_id from tag_link where tag_link.media_type='movie') order by movie.c00"
@@ -151,27 +151,27 @@ class CVideoDatabase:
         debug("CVideoDatabase getallmovieswithouttag: sql:{0}".format(sql))
         self.cur.execute(sql)
         return self.cur.fetchall()
-        
+
     def getMovieById(self, id):
         #sql = "select * from movie where idMovie = {0}".format(id)
         sql = "select * from movie where idMovie = %s order by movie.c00" % (self.db.pparam)
         debug("CVideoDatabase getmoviebyid: sql:{0}".format(sql))
         self.cur.execute(sql,((id),))
         return self.cur.fetchall()
-    
+
     def getMusicvideosById(self, id):
         #sql = "select * from musicvideo where idMVideo = {0}".format(id)
         sql = "select * from musicvideo where idMVideo = %s order by musicvideo.c00" % (self.db.pparam)
         debug("CVideoDatabase getmusicvideosbyid: sql:{0}".format(sql))
         self.cur.execute(sql,((id),))
         return self.cur.fetchall()
-    
+
     def getTVShowsById(self, id):
         sql = "select idShow,0,c00 from tvshow where idShow = %s  order by tvshow.c00" % (self.db.pparam)
         debug("CVideoDatabase gettvshowsbyid: sql:{0}".format(sql))
         self.cur.execute(sql,((id),))
         return self.cur.fetchall()
-    
+
     #get the pathid
     def GetPathId(self, pathname):
         sql = "select path.idPath from path where  path.strPath  = %s" %(self.db.pparam)
@@ -182,7 +182,7 @@ class CVideoDatabase:
             return row[0]
         else:
             return 0
-    
+
     #get the fileid
     def GetFileId(self, pathid):
         sql = u"select movie_view.idFile from movie_view where %s = %s" % (self.db.concatrows("movie_view.strPath","movie_view.strFileName"), self.db.pparam)

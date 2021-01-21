@@ -1,6 +1,6 @@
 import os, xbmc, xbmcvfs, glob, string
 import xml.dom.minidom
-from strings import * 
+from strings import *
 
 ADVSETTINGS_FILE = "advancedsettings.xml"
 PROFILE_PATH = "special://profile/"
@@ -24,17 +24,17 @@ class CDatabase:
         'use_unicode': True,
         'get_warnings': True
     }
-    
+
     pparam = "?"
-    
+
     #type       sqlite or mysql
     #host       sqlite: path to database            mysql: ip of host
     #port       sqlite: ignored                     mysql: port
     #name       sqlite: name of db-file or empty    mysql: databasename
-    #name       if empty then fallback to standard file or db-names 
+    #name       if empty then fallback to standard file or db-names
     #user       sqlite: ignored                     mysql: user of db
     #password   sqlite: ignored                     mysql: password of db
-    
+
     def __init__(self):
         debug("CDatabase init settings")
         self.config = self.baseconfig.copy()
@@ -48,7 +48,7 @@ class CDatabase:
         else:
             debug("CDatabase init using mysql")
             self.init_mysql()
-                
+
     def init_mysql(self):
         debug("CDatabase init mysql")
         import mysql.connector
@@ -107,7 +107,7 @@ class CDatabase:
         except:
             debug("CDatabase SQLite not found")
             return
-        
+
     def getSQLiteFileName(self,pattern):
         debug("CDatabase getsqlitefilename")
         os.chdir(xbmcvfs.translatePath(DATABASE_PATH+"Database/"))
@@ -157,7 +157,7 @@ class CDatabase:
             if node.nodeType == node.TEXT_NODE:
                 rc.append(node.data)
         return ''.join(rc)
-    
+
     def getASpath(self):
         path = xbmcvfs.translatePath(PROFILE_PATH+ADVSETTINGS_FILE)
         if os.path.exists(path):

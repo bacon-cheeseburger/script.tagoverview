@@ -10,4 +10,3 @@ class CThreadTagOverview(threading.Thread):
         wnd = CDialogTagOverview()
         wnd.doModal()
         debug("CThreadTagOverview run stop")
-        

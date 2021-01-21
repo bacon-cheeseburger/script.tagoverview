@@ -15,4 +15,3 @@ class CThreadTagMovies(threading.Thread):
         else:
             wnd.doModal()
         debug("CThreadTagMovies run stop")
-        
