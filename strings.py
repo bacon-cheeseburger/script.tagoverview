@@ -1,6 +1,7 @@
 import xbmcaddon, xbmc
 
 ADDON = xbmcaddon.Addon(id='script.tagoverview')
+ADDON_NAME = ADDON.getAddonInfo('name')
 language = ADDON.getLocalizedString
 ACTION_MOVE_LEFT       =  1 #Dpad Left
 ACTION_MOVE_RIGHT      =  2 #Dpad Right
@@ -68,22 +69,25 @@ PROPERTY_MUSICVIDEO     = 'musicvideo'
 
 def debug(msg, *args):
     try:
-        txt=u''
-        msg=unicode(msg)
+        txt=''
+        msg=str(msg)
         for arg in args:
-            if type(arg) == int:
-                arg = unicode(arg)
-            if type(arg) == list:
-                arg = unicode(arg)
-            txt = txt + u"/" + arg
-        if txt == u'':
-            xbmc.log(u"Tag: {0}".format(msg).encode('ascii','xmlcharrefreplace'), xbmc.LOGDEBUG)
+            if isinstance(arg, int):
+                txt = txt + "//INT//" + str(arg)
+            elif isinstance(arg, list):
+                txt = txt + "//LIST//" + str(arg)
+            else:
+                txt = ' '.join(map(str, args))
+                break
+        if txt == '':
+            msg = '%s: %s' % (ADDON_NAME, "{0}".format(msg).encode('ascii','xmlcharrefreplace'))
         else:
-            xbmc.log(u"Tag: {0}#{1}#".format(msg, txt).encode('ascii','xmlcharrefreplace'), xbmc.LOGDEBUG)
+            msg = '%s: %s' % (ADDON_NAME, "{0}#{1}#".format(msg, txt).encode('ascii','xmlcharrefreplace'))
+        xbmc.log(msg, xbmc.LOGDEBUG)
     except:
         print("Error in Debugoutput")
-        print(msg)
-        print(args)
+        print("msg :%s" % msg)
+        print("args:%s" % args)
 
 def error(msg, *args):
     txt=''
@@ -103,4 +107,4 @@ def decode(string):
     return string.decode('utf-8','replace')
 
 def uc(s):
-    return unicode(s, 'utf-8','replace')
+    return str(s, 'utf-8','replace')
