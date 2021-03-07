@@ -160,9 +160,8 @@ class CDialogTagMovies(xbmcgui.WindowXMLDialog):
             li.setProperty(PROPERTY_ENABLED,PROPSTATE_FALSE)
             tag_id = li.getProperty(PROPERTY_TAGID)
             self.RemoveTagToItem(tag_id,assetID, assetTYPE)
-            debug('self.AddTag(li.getLabel()= ', self.AddTag(li.getLabel()))
-            #below line was causing an error so i commented it out with seemingly no ill effect
-            #li.setProperty(PROPERTY_TAGID, self.AddTag(li.getLabel()))
+            debug('self.AddTag(li.getLabel()=', self.AddTag(li.getLabel()))
+            li.setProperty(PROPERTY_TAGID, str(self.AddTag(li.getLabel())))
         else:
             li.setProperty(PROPERTY_ENABLED,PROPSTATE_TRUE)
             tag_id = li.getProperty(PROPERTY_TAGID)
