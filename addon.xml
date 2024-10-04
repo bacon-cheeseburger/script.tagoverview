@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.tagoverview" name="Tag Overview" version="0.1.3" provider-name="teriyaki via fnord12 via olivaar">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0"/>
