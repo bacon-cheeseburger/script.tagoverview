@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 
 msgctxt "#32000"
-msgid "Tags"
+msgid "Edit Tags"
 msgstr ""
 
 msgctxt "#32001"
@@ -116,6 +116,3 @@ msgstr ""
 msgctxt "#50024"
 msgid "Host address"
 msgstr ""
-    
-
-    

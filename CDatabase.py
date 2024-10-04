@@ -22,7 +22,8 @@ class CDatabase:
         'database': None,
         'charset': 'utf8',
         'use_unicode': True,
-        'get_warnings': True
+        'get_warnings': True,
+        'use_mariadb': 'no'
     }
 
     pparam = "?"
@@ -34,24 +35,34 @@ class CDatabase:
     #name       if empty then fallback to standard file or db-names
     #user       sqlite: ignored                     mysql: user of db
     #password   sqlite: ignored                     mysql: password of db
+    #use_mariadb sqlite: ignored                    mysql: used to select mysql.connector or mariadb.connector module
 
     def __init__(self):
         debug("CDatabase init settings")
+        global do_connect, sqlite
         self.config = self.baseconfig.copy()
         debug("CDatabase init settings",self.config)
         self.getConfig()
         self.type = self.config['type']
+        self.use_mariadb = self.config['use_mariadb']
         del self.config['type']
+        del self.config['use_mariadb']
         if self.type == 'sqlite':
             debug("CDatabase init using sqlite")
+            from sqlite3 import dbapi2 as sqlite
             self.init_sqlite()
         else:
             debug("CDatabase init using mysql")
+            if self.use_mariadb == 'yes':
+                from mariadb import connect as do_connect
+                del self.config['charset'], self.config['use_unicode'], self.config['get_warnings']
+                self.config['port'] = int(self.config['port'])
+            else:
+                from mysql.connector import Connect as do_connect
             self.init_mysql()
 
     def init_mysql(self):
-        debug("CDatabase init mysql")
-        import mysql.connector
+        debug("CDatabase init_mysql using connector method \"" + do_connect.__name__ + "\"")
         if self.config['database'] == None:
             self.config['database'] = self.getMySQLDBName(VIDEO_SEARCHPATTERN_DB)
         else:
@@ -60,7 +71,7 @@ class CDatabase:
             self.config['database'] = self.getMySQLDBName(db)
         debug("CDatabase init dbname",self.config['database'])
         try:
-            self.con = mysql.connector.Connect(**self.config)
+            self.con = do_connect(**self.config)
             debug("CDatabase Using built-in MySQL")
         except:
             error("CDatabase MySQL not found")
@@ -69,9 +80,8 @@ class CDatabase:
 
     def getMySQLDBName(self,pattern):
         debug("CDatabase getmysqlname")
-        import mysql.connector
-        debug("CDatabase befor connect")
-        con = mysql.connector.Connect(**self.config)
+        debug("CDatabase before connect")
+        con = do_connect(**self.config)
         cur = con.cursor()
         debug("CDatabase after alldb","SHOW DATABASES LIKE '%s'" % pattern)
         cur.execute("SHOW DATABASES LIKE '%s'" % pattern)
@@ -89,7 +99,6 @@ class CDatabase:
 
     def init_sqlite(self):
         debug("CDatabase init sqlite")
-        from sqlite3 import dbapi2 as sqlite
         print(self.config['database'])
         if self.config['database'] == None:
             self.config['database'] = self.getSQLiteFileName(VIDEO_SEARCHPATTERN_SQLITE)
@@ -149,6 +158,8 @@ class CDatabase:
                             self.config['user'] = self.getText(node)
                         if node.tagName == 'pass':
                                 self.config['password'] = self.getText(node)
+                        if node.tagName == 'use_mariadb':
+                                self.config['use_mariadb'] = self.getText(node)
         debug("CDatabase getconfig",self.config)
 
     def getText(self,node):

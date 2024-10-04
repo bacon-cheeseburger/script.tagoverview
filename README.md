@@ -1,4 +1,7 @@
 # script.tagoverview
+OCT 03 2024
+Added support for mariadb-connector.
+
 JAN 20 2021
 Updated for Kodi Matrix (python3), no backwards compatibility included.
 
